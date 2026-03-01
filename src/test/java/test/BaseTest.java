@@ -6,7 +6,7 @@ import steps.RegistrationSteps;
 
 public class BaseTest {
 
-    protected TestData testData = new TestData();
+    public static TestData testData = new TestData();
     protected RegistrationSteps registrationSteps = new RegistrationSteps();
     protected AuthSteps authSteps = new AuthSteps();
 }

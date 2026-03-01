@@ -8,10 +8,12 @@ import net.datafaker.Faker;
 public class TestData {
 
     private final Faker faker = new Faker();
+    public final String VALID_PASSWORD = "Password123!";
 
     public String login() {
         return faker.regexify("[A-Za-z0-9]{6,20}");
     }
+
 
     public String password() {
         return faker.credentials().password(8, 30, true, true);

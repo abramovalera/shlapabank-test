@@ -1,11 +1,11 @@
 package enums;
 
-/**
- * Перечень HTTP‑эндпоинтов Шляпа Банка.
- */
+
 public enum Endpoint {
 
-    REGISTER("/api/v1/auth/register");
+    BASE_URL("http://localhost:8001"),
+    REGISTER("/api/v1/auth/register"),
+    LOGIN("/api/v1/auth/login");
 
     private final String path;
 

@@ -1,21 +1,12 @@
 package test;
 
-import generators.UserTestData;
-import io.restassured.RestAssured;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import org.junit.jupiter.api.BeforeAll;
+import generators.TestData;
+import steps.AuthSteps;
+import steps.RegistrationSteps;
 
 public class BaseTest {
 
-    protected UserTestData testData = new UserTestData();
-
-    @BeforeAll
-    static void setUp() {
-        RestAssured.baseURI = "http://localhost:8001";
-        RestAssured.filters(
-                new RequestLoggingFilter(),
-                new ResponseLoggingFilter()
-        );
-    }
+    protected TestData testData = new TestData();
+    protected RegistrationSteps registrationSteps = new RegistrationSteps();
+    protected AuthSteps authSteps = new AuthSteps();
 }

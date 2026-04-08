@@ -2,9 +2,10 @@ package ru.shlapabank.enums;
 
 public enum Endpoint {
 
-    BASE_URL("http://155.212.170.64");
-
-
+    REGISTER("/api/v1/auth/register"),
+    BASE_URL("http://155.212.170.64"),
+    LOGIN("/api/v1/auth/login"),
+    ACCOUNTS("/api/v1/accounts");
 
     private final String path;
 
@@ -12,7 +13,7 @@ public enum Endpoint {
         this.path = path;
     }
 
-    public String getPath() {
+    public String path() {
         return path;
     }
 }

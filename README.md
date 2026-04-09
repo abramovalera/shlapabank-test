@@ -42,14 +42,6 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 
 ## Отчётность (Allure)
 
-Результаты прогона: **`build/allure-results`**.
-
-```bash
-./gradlew allureReport
-# отчёт: build/reports/allure-report/index.html
-
-./gradlew allureServe
-```
 
 В отчёте: иерархия сценариев (`@Epic` / `@Feature` / `@Story`, `@Step`), для REST — вложения **Request** / **Response** (шаблоны FreeMarker `request.ftl` / `response.ftl`), для UI — шаги Selenide и скриншоты.
 

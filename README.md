@@ -62,6 +62,7 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 ### Пример запроса
 
 ![Пример запроса в Allure](./src/main/resources/images/api-request-example.png)
+<img width="1015" height="617" alt="image" src="https://github.com/user-attachments/assets/93def3da-6079-46f7-b007-20f0a5790820" />
 
 ### Пример ответа
 

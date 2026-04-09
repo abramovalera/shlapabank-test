@@ -64,35 +64,43 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 ./gradlew allureServe
 ```
 
-В отчёте: иерархия сценариев (`@Epic` / `@Feature` / `@Story`, `@Step`), для REST — вложения **Request** / **Response** (шаблоны FreeMarker `request.ftl` / `response.ftl`), для UI — шаги Selenide и скриншоты.
+В отчёте: иерархия сценариев (`@Epic` / `@Feature` / `@Story`, `@Step`). Ниже — сначала **общий вид прогона**, затем отдельно **API** (HTTP) и **UI** (браузер).
 
-### Отчёт Allure
+### Общий вид прогона
 
-Дашборд Allure (сводка по прогону, suites, API/UI, категории):
+Дашборд: сколько тестов прошло / упало, разбивка по suites, API и UI, категории, исполнитель (Gradle).
 
-![Дашборд Allure](./src/main/resources/images/allure-dashboard.png)
+![Дашборд Allure — общая сводка](./src/main/resources/images/allure-dashboard.png)
 
-Дополнительно — более ранний обзор и карточка теста со шагами:
+Краткий обзор прогона (пример с полностью зелёным прогоном):
 
-![Отчёт Allure — обзор](./src/main/resources/images/allure-overview.png)
+![Allure — обзор прогона](./src/main/resources/images/allure-overview.png)
 
-![Отчёт Allure — suites и шаги](./src/main/resources/images/allure-suites-detail.png)
+### API-тесты в отчёте
 
-### Падение UI-теста
+Для REST-вызовов в шагах доступны вложения **Request** и **Response** (HTML-шаблоны FreeMarker `request.ftl` / `response.ftl`). В дереве suites видна группировка сценариев; в карточке справа — шаги и вложения к ним (для UI — скриншот и page source; для API — см. примеры ниже).
 
-Если тест падает, в Allure обычно видно: **текст ошибки** (что ожидали и что получили — например, элемент должен быть видимым, фактически `hidden`), **скриншот** страницы в момент сбоя, **page source**, цепочку **шагов** с таймингами и вложения к шагу.
+![Allure — suites и карточка теста, шаги и вложения](./src/main/resources/images/allure-suites-detail.png)
 
-![Падение UI-теста в Allure — причина, скриншот, шаги](./src/main/resources/images/allure-ui-failure.png)
+**Пример запроса (API)**
 
-### Пример запроса
+![Пример запроса API в Allure](./src/main/resources/images/api-request-example.png)
 
-![Пример запроса в Allure](./src/main/resources/images/api-request-example.png)
+**Пример ответа (API)**
 
-### Пример ответа
+![Пример ответа API в Allure](./src/main/resources/images/api-response-example.png)
 
-![Пример ответа в Allure](./src/main/resources/images/api-response-example.png)
+### UI-тесты в отчёте
 
-Новые скрины клади в **`src/main/resources/images/`**. В Markdown используй путь от корня репозитория, например: `![описание](./src/main/resources/images/имя.png)`._
+Для UI в отчёте видны шаги Selenide, скриншоты. При падении — **сообщение проверки** (ожидание vs факт), **скриншот** страницы, **page source**, тайминги шагов.
+
+![Падение UI-теста в Allure — ошибка и обзор шагов](./src/main/resources/images/allure-ui-failure-overview.png)
+
+![Падение UI-теста в Allure — шаг с вложением (скриншот страницы)](./src/main/resources/images/allure-ui-failure-steps.png)
+
+---
+
+Новые скрины клади в **`src/main/resources/images/`**. В Markdown: `![описание](./src/main/resources/images/имя.png)`.
 
 **Не отображаются картинки?**
 

@@ -1,8 +1,8 @@
 # Автотесты для тренировочного приложения ShlapaBank
 
-Репозиторий автотестов для учебного банковского приложения **ShlapaBank**. Основной упор на **happy path** — позитивные сценарии (регистрация, счета, переводы, платежи, профиль и т.д.).
+Репозиторий автотестов для учебного банковского приложения **ShlapaBank**.
 
-**Репозиторий приложения (бэкенд / фронт):** [вставь ссылку на GitHub или GitLab](https://github.com/)
+**Репозиторий приложения: (бэкенд / фронт):** [вставь ссылку на GitHub или GitLab](https://github.com/)](https://github.com/abramovalera/shlapabank)
 
 ---
 
@@ -40,19 +40,6 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 
 ---
 
-## Запуск
-
-Нужны **Java** и доступное приложение (URL в `config.properties` и профилях для UI).
-
-```bash
-./gradlew test              # все тесты
-./gradlew api               # только API (тег JUnit: API)
-./gradlew web               # только UI (тег: ui)
-./gradlew test -Denv=web    # профиль Owner, например web
-```
-
----
-
 ## Отчётность (Allure)
 
 Результаты прогона: **`build/allure-results`**.
@@ -68,19 +55,15 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 
 ### Отчёт Allure
 
-Дашборд Allure (сводка по прогону, suites, API/UI, категории):
+Дашборд Allure:
 
 ![Дашборд Allure](./src/main/resources/images/allure-dashboard.png)
-
-Дополнительно — более ранний обзор и карточка теста со шагами:
-
 ![Отчёт Allure — обзор](./src/main/resources/images/allure-overview.png)
-
 ![Отчёт Allure — suites и шаги](./src/main/resources/images/allure-suites-detail.png)
 
 ### Падение UI-теста
 
-Если тест падает, в Allure обычно видно: **текст ошибки** (что ожидали и что получили — например, элемент должен быть видимым, фактически `hidden`), **скриншот** страницы в момент сбоя, **page source**, цепочку **шагов** с таймингами и вложения к шагу.
+Если тест падает, в Allure обычно видно: **текст ошибки** (что ожидали и что получили), **скриншот** страницы в момент сбоя, **page source**, цепочку **шагов** с таймингами и вложения к шагу.
 
 ![Падение UI-теста в Allure — причина, скриншот, шаги](./src/main/resources/images/allure-ui-failure.png)
 
@@ -92,26 +75,5 @@ Java · Gradle · JUnit 5 · REST Assured · Jackson · Selenide · Allure · As
 
 ![Пример ответа в Allure](./src/main/resources/images/api-response-example.png)
 
-Новые скрины клади в **`src/main/resources/images/`**. В Markdown используй путь от корня репозитория, например: `![описание](./src/main/resources/images/имя.png)`._
-
-**Не отображаются картинки?**
-
-- **В Cursor / VS Code:** открой превью README (`Ctrl+Shift+V` или иконка предпросмотра). Корень воркспейса должен быть папка проекта, где лежат `README.md` и `src/` (а не родительская директория).
-- **На GitHub:** картинки появятся только если файлы **закоммичены**. Если папка с PNG и README не в git, выполни `git add README.md src/main/resources/images/` и `git push`.
 
 ---
-
-## Структура репозитория
-
-```
-src/main/resources/images/   — картинки для README (и при необходимости для проекта)
-src/main/java/ru/shlapabank/   — конфиг, шаги API, модели, Page Object
-src/test/java/ru/shlapabank/   — API- и UI-тесты, базовые классы
-src/test/resources/          — properties, шаблоны Allure для REST
-```
-
----
-
-## Заметки
-
-Перед публикацией на GitHub убери из `*.properties` реальные URL, логины и пароли — используй плейсхолдеры или переменные окружения.

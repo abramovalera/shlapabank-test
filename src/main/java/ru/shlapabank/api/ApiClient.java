@@ -19,7 +19,6 @@ public class ApiClient {
                 .when()
                 .post(path)
                 .then()
-                .log().all()
                 .extract()
                 .response();
     }
@@ -40,7 +39,6 @@ public class ApiClient {
                 .when()
                 .post(path)
                 .then()
-                .log().all()
                 .extract()
                 .response();
     }
@@ -59,7 +57,6 @@ public class ApiClient {
                 .when()
                 .get(path)
                 .then()
-                .log().all()
                 .extract()
                 .response();
     }

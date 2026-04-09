@@ -15,6 +15,14 @@ import ru.shlapabank.enums.Endpoint;
 public class AuthApiSteps {
     private final ApiClient apiClient = new ApiClient();
 
+    private Response registerRaw(UserCredentials user) {
+        return apiClient.post(Endpoint.REGISTER.path(), new RegisterRequest(user.getLogin(), user.getPassword()));
+    }
+
+    private Response loginRaw(UserCredentials user) {
+        return apiClient.post(Endpoint.LOGIN.path(), new LoginRequest(user.getLogin(), user.getPassword()));
+    }
+
     @Step("Сгенерированы данные пользователя")
     public UserCredentials generateUserCredentials() {
         String login = TestData.generateLogin();
@@ -24,19 +32,17 @@ public class AuthApiSteps {
 
     @Step("Регистрация пользователя")
     public Response register(UserCredentials user) {
-        return apiClient.post(Endpoint.REGISTER.path(), new RegisterRequest(user.getLogin(), user.getPassword()));
+        return registerRaw(user);
     }
 
     @Step("Авторизация пользователя")
     public Response login(UserCredentials user) {
-        return apiClient.post(Endpoint.LOGIN.path(), new LoginRequest(user.getLogin(), user.getPassword()));
+        return loginRaw(user);
     }
 
     @Step("Авторизация и получение access token")
     public String loginAndGetToken(UserCredentials user) {
-        TokenResponse tokenResponse = apiClient
-                .post(Endpoint.LOGIN.path(), new LoginRequest(user.getLogin(), user.getPassword()))
-                .as(TokenResponse.class);
+        TokenResponse tokenResponse = loginRaw(user).as(TokenResponse.class);
         return tokenResponse.getAccessToken();
     }
 }

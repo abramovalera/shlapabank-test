@@ -11,8 +11,7 @@ import ru.shlapabank.api.models.response.AccountResponse;
 import ru.shlapabank.api.steps.AccountApiSteps;
 import ru.shlapabank.api.steps.AuthApiSteps;
 import ru.shlapabank.api.steps.HelperApiSteps;
-import ru.shlapabank.enums.AccountType;
-import ru.shlapabank.enums.Currency;
+
 
 import java.math.BigDecimal;
 

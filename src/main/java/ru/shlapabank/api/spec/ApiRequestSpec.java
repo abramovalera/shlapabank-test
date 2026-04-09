@@ -8,7 +8,7 @@ import ru.shlapabank.enums.Endpoint;
 import static io.restassured.http.ContentType.JSON;
 
 /**
- * Общая {@link RequestSpecification} для API: фильтр Allure, лог запроса в консоль, base URI, JSON.
+ * Общая {@link RequestSpecification} для API: фильтр Allure, base URI, JSON.
  */
 public final class ApiRequestSpec {
 
@@ -18,7 +18,6 @@ public final class ApiRequestSpec {
     public static RequestSpecification base() {
         return RestAssured.given()
                 .filter(AllureRestAssuredConfigurator.filterWithHtmlTemplates())
-                .log().all()
                 .baseUri(Endpoint.BASE_URL.path())
                 .accept(JSON)
                 .contentType(JSON);

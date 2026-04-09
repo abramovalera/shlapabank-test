@@ -18,9 +18,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("ui")
 @Epic("UI")
 @Feature("Переводы")
-@DisplayName("Переводы и лимиты (UI)")
+@DisplayName("Переводы и лимиты")
 class TransferUiTest extends UiAuthenticatedBaseTest {
 
     private final DashboardPage dashboard = new DashboardPage();

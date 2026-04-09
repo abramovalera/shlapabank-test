@@ -16,6 +16,7 @@ import ru.shlapabank.enums.UserStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("API")
 @Epic("API")
 @Feature("Авторизация и регистрация")
 @DisplayName("Регистрация и авторизация")

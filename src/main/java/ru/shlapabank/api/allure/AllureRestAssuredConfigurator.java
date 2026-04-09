@@ -3,8 +3,7 @@ package ru.shlapabank.api.allure;
 import io.qameta.allure.restassured.AllureRestAssured;
 
 /**
- * Создает фильтр {@link AllureRestAssured} с шаблонами {@code tpl/request.ftl} и {@code tpl/response.ftl}
- * для вложений запроса/ответа в отчет Allure.
+ * Создает фильтр {@link AllureRestAssured} с HTML-шаблонами из classpath {@code tpl/*.ftl}.
  */
 public final class AllureRestAssuredConfigurator {
 
@@ -14,8 +13,8 @@ public final class AllureRestAssuredConfigurator {
     /** Новый фильтр для подключения через {@code .filter(...)}. */
     public static AllureRestAssured filterWithHtmlTemplates() {
         AllureRestAssured filter = new AllureRestAssured();
-        filter.setRequestTemplate("request.ftl");
-        filter.setResponseTemplate("response.ftl");
+        filter.setRequestTemplate("tpl/request.ftl");
+        filter.setResponseTemplate("tpl/response.ftl");
         filter.setResponseAttachmentName("Response");
         return filter;
     }

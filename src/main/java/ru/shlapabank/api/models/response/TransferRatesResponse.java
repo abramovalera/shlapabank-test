@@ -1,24 +1,26 @@
 package ru.shlapabank.api.models.response;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 /**
- * Модель ответа по курсам валют.
+ * Ответ {@code GET .../transfers/rates}: курсы в {@code toRub}.
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransferRatesResponse {
-    @JsonIgnore
-    private final Map<String, Object> rates = new HashMap<>();
+    private Long userId;
+    private String base;
 
-    @JsonAnySetter
-    public void put(String key, Object value) {
-        rates.put(key, value);
+    @JsonProperty("toRub")
+    private Map<String, String> toRub = Collections.emptyMap();
+
+    /** Курсы к рублю по коду валюты. */
+    public Map<String, String> getRates() {
+        return toRub != null ? toRub : Collections.emptyMap();
     }
 }

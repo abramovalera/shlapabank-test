@@ -15,9 +15,10 @@ import ru.shlapabank.ui.pages.DashboardPage;
 
 import java.math.BigDecimal;
 
+@Tag("ui")
 @Epic("UI")
 @Feature("Транзакции")
-@DisplayName("История операций (UI)")
+@DisplayName("История операций")
 class TransactionUiTest extends UiAuthenticatedBaseTest {
 
     private final DashboardPage dashboard = new DashboardPage();

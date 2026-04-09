@@ -7,15 +7,17 @@ import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.models.response.ProfileResponse;
 import ru.shlapabank.api.steps.ProfileSteps;
 import ru.shlapabank.ui.pages.DashboardPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("ui")
 @Epic("UI")
 @Feature("Профиль")
-@DisplayName("Профиль пользователя (UI)")
+@DisplayName("Профиль пользователя")
 class ProfileUiTest extends UiAuthenticatedBaseTest {
 
     private final DashboardPage dashboard = new DashboardPage();
@@ -26,11 +28,12 @@ class ProfileUiTest extends UiAuthenticatedBaseTest {
     @DisplayName("Обновление профиля (POZITIVE)")
     @Severity(SeverityLevel.CRITICAL)
     void updateProfileTest() {
+        String email = TestData.generateUniqueEmail();
         dashboard.shouldBeLoaded()
-                .updateProfile("Ivan", "ivan@shlapabank.ru");
+                .updateProfile("Ivan", email);
 
         ProfileResponse profile = profileSteps.getProfile(token);
         assertThat(profile.getFirstName()).isEqualTo("Ivan");
-        assertThat(profile.getEmail()).isEqualTo("ivan@shlapabank.ru");
+        assertThat(profile.getEmail()).isEqualTo(email);
     }
 }

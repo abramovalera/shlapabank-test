@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.shlapabank.api.check.Checks.assertCompletedTransaction;
 import static ru.shlapabank.api.check.Checks.assertZeroFee;
 
+@Tag("API")
 @Epic("API")
 @Feature("Транзакции")
 @DisplayName("История транзакций")
@@ -67,7 +68,7 @@ class TransactionTest extends AuthenticatedBaseTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Транзакция TRANSFER не найдена в истории"));
 
-        assertCompletedTransaction(transfer, "TRANSFER");
+        assertCompletedTransaction(transfer, "TRANSFER", "P2P_TRANSFER", "p2p_transfer");
         assertThat(transfer.getFromAccountId()).as("from_account_id").isEqualTo(from.getId());
         assertThat(transfer.getToAccountId()).as("to_account_id").isEqualTo(to.getId());
         assertThat(new BigDecimal(transfer.getMoney().getAmount())).as("сумма перевода").isEqualByComparingTo(transferAmount);

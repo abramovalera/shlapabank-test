@@ -41,4 +41,22 @@ public class AuthSteps {
                 .then()
                 .statusCode(200);
     }
+
+    /**
+     * Удаление в фикстуре: не бросает исключение, чтобы падение админ-API не ломало отчёт по тестам.
+     */
+    @Step("Удаление пользователя {userId} (без assert)")
+    public void deleteUserQuietly(String adminToken, Integer userId) {
+        try {
+            int code = ApiRequestSpec.auth(adminToken)
+                    .pathParam("user_id", userId)
+                    .delete(Endpoint.ADMIN_USER_DELETE.path())
+                    .getStatusCode();
+            if (code != 200) {
+                System.err.println("WARN: DELETE user " + userId + " returned HTTP " + code);
+            }
+        } catch (RuntimeException e) {
+            System.err.println("WARN: DELETE user " + userId + " failed: " + e.getMessage());
+        }
+    }
 }

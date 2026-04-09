@@ -26,4 +26,10 @@ public final class TestData {
     public static String defaultPassword() {
         return DEFAULT_PASSWORD;
     }
+
+    /** Уникальный email для обновления профиля на общих стендах. */
+    public static String generateUniqueEmail() {
+        String local = FAKER.internet().uuid().replace("-", "").substring(0, 16);
+        return "user+" + local + "@shlapabank.ru";
+    }
 }

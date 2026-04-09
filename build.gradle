@@ -48,12 +48,17 @@ dependencies {
     implementation 'org.assertj:assertj-core:3.27.7'
 
     // Selenide — UI-тесты
-    implementation 'com.codeborne:selenide:7.3.3'
+    implementation 'com.codeborne:selenide:7.10.0'
+
+    // Owner — конфиг окружения (local.properties / web.properties по -Denv=)
+    testImplementation 'org.aeonbits.owner:owner:1.0.12'
 }
 
 tasks.withType(Test).configureEach {
+    maxParallelForks = 1
     jvmArgs '-Dfile.encoding=UTF-8'
     systemProperty 'file.encoding', 'UTF-8'
+    systemProperty 'env', System.getProperty('env', 'local')
     systemProperties System.properties
     testLogging {
         // Показывает вывод Request/Response фильтров в консоли Gradle/IDE.
@@ -66,12 +71,28 @@ test {
     useJUnitPlatform()
 }
 
-tasks.register('ui', Test) {
+tasks.register('web', Test) {
     group = 'verification'
-    description = 'UI tests (JUnit tag: ui)'
+    description = 'UI-тесты (JUnit tag: ui), см. src/test/resources/local.properties / web.properties и -Denv='
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
     useJUnitPlatform {
         includeTags 'ui'
     }
+}
+
+tasks.register('api', Test) {
+    group = 'verification'
+    description = 'API-тесты (JUnit tag: API)'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'API'
+    }
+}
+
+tasks.register('ui') {
+    group = 'verification'
+    description = 'Алиас: то же, что gradlew web'
+    dependsOn 'web'
 }

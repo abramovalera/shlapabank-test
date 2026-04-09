@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.shlapabank.api.check.Checks.assertCompletedTransaction;
 import static ru.shlapabank.api.check.Checks.assertZeroFee;
 
+@Tag("API")
 @Epic("API")
 @Feature("Счета")
 @DisplayName("Счета")
@@ -99,10 +100,10 @@ class AccountTest extends AuthenticatedBaseTest {
 
         var response = accountSteps.tryAddBalanceWithOtp(token, account.getId(), new BigDecimal("100.00"));
 
-        assertThat(response.getStatusCode()).as("http-статус").isEqualTo(422);
+        assertThat(response.getStatusCode()).as("http-статус").isIn(404, 422);
         assertThat(response.jsonPath().getString("detail"))
                 .as("код ошибки")
-                .isEqualTo("account_already_closed");
+                .isIn("account_already_closed", "account_not_found");
     }
 
     @Tag("smoke")

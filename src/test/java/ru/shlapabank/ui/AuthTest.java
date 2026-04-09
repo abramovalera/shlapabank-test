@@ -11,6 +11,7 @@ import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.steps.AuthSteps;
 import ru.shlapabank.ui.pages.AuthPage;
 
+@Tag("ui")
 @Epic("UI")
 @Feature("Авторизация и регистрация")
 @DisplayName("Регистрация и авторизация")

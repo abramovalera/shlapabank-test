@@ -18,9 +18,10 @@ import java.util.Comparator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("ui")
 @Epic("UI")
 @Feature("Счета")
-@DisplayName("Счета (UI)")
+@DisplayName("Счета")
 class AccountUiTest extends UiAuthenticatedBaseTest {
 
     private final DashboardPage dashboard = new DashboardPage();

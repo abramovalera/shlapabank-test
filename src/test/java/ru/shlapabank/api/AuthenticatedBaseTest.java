@@ -1,19 +1,18 @@
 package ru.shlapabank.api;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.models.response.RegisterResponse;
 import ru.shlapabank.api.steps.AuthSteps;
 
 /**
  * Базовый класс для тестов, требующих авторизованного пользователя.
- * Автоматически регистрирует пользователя перед тестами и удаляет его после.
+ * На каждый тест — отдельный пользователь (ниже риск упираться в лимиты счетов на стенде).
+ * Удаление пользователя в конце теста не валит прогон при сбое API.
  * <p>
  * Наследникам доступны поля {@code token} и {@code userId}.
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AuthenticatedBaseTest extends BaseTest {
 
     protected final AuthSteps authSteps = new AuthSteps();
@@ -21,7 +20,7 @@ public abstract class AuthenticatedBaseTest extends BaseTest {
     protected String token;
     protected Integer userId;
 
-    @BeforeAll
+    @BeforeEach
     void setUpUser() {
         String login = TestData.generateLogin();
         String password = TestData.defaultPassword();
@@ -30,11 +29,11 @@ public abstract class AuthenticatedBaseTest extends BaseTest {
         token = authSteps.login(login, password).getAccessToken();
     }
 
-    @AfterAll
+    @AfterEach
     void tearDownUser() {
         if (userId != null) {
             String adminToken = authSteps.login("admin", "admin").getAccessToken();
-            authSteps.deleteUser(adminToken, userId);
+            authSteps.deleteUserQuietly(adminToken, userId);
         }
     }
 }

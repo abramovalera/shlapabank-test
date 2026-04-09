@@ -18,11 +18,13 @@ import ru.shlapabank.enums.Currency;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.shlapabank.api.check.Checks.assertCompletedTransaction;
 import static ru.shlapabank.api.check.Checks.assertZeroFee;
 
+@Tag("API")
 @Epic("API")
 @Feature("Переводы")
 @DisplayName("Переводы")
@@ -44,7 +46,7 @@ class TransferTest extends AuthenticatedBaseTest {
 
         TransactionResponse tx = transferSteps.transfer(token, from.getId(), to.getId(), transferAmount);
 
-        assertCompletedTransaction(tx, "TRANSFER");
+        assertCompletedTransaction(tx, "TRANSFER", "P2P_TRANSFER", "p2p_transfer");
         assertZeroFee(tx);
         assertThat(tx.getFromAccountId()).as("счет списания").isEqualTo(from.getId());
         assertThat(tx.getToAccountId()).as("счет зачисления").isEqualTo(to.getId());
@@ -70,7 +72,7 @@ class TransferTest extends AuthenticatedBaseTest {
 
         assertThat(rates.getRates()).as("курсы валют").containsKeys("RUB", "USD", "EUR", "CNY");
         assertThat(rates.getRates().values()).as("все курсы положительны")
-                .allSatisfy(rate -> assertThat(((Number) rate).doubleValue()).isPositive());
+                .allSatisfy(s -> assertThat(new BigDecimal(s)).isPositive());
     }
 
     @Tag("smoke")
@@ -79,9 +81,10 @@ class TransferTest extends AuthenticatedBaseTest {
     @Severity(SeverityLevel.NORMAL)
     void getDailyUsageTest() {
         DailyUsageResponse usage = transferSteps.getDailyUsage(token);
+        Map<String, BigDecimal> remaining = usage.remainingByCurrency();
 
-        assertThat(usage.getUsage()).as("лимиты по валютам").containsKeys("RUB", "USD", "EUR", "CNY");
-        assertThat(usage.getUsage().values()).as("значения лимитов >= 0")
-                .allSatisfy(value -> assertThat(((Number) value).doubleValue()).isGreaterThanOrEqualTo(0));
+        assertThat(remaining).as("лимиты по валютам").containsKeys("RUB", "USD", "EUR", "CNY");
+        assertThat(remaining.values()).as("остаток лимита >= 0")
+                .allSatisfy(value -> assertThat(value).isGreaterThanOrEqualTo(BigDecimal.ZERO));
     }
 }

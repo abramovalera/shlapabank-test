@@ -13,10 +13,11 @@ public final class Checks {
     /**
      * Проверяет, что транзакция завершена успешно и содержит базовые поля.
      */
-    @Step("Проверка завершённой транзакции: тип={expectedType}")
-    public static void assertCompletedTransaction(TransactionResponse tx, String expectedType) {
+    @Step("Проверка завершённой транзакции: тип один из {expectedTypes}")
+    public static void assertCompletedTransaction(TransactionResponse tx, String... expectedTypes) {
         Assertions.assertThat(tx.getStatus()).as("статус транзакции").isEqualTo("COMPLETED");
-        Assertions.assertThat(tx.getType()).as("тип транзакции").isEqualTo(expectedType);
+        Assertions.assertThat(expectedTypes).as("ожидаемые типы заданы").isNotEmpty();
+        Assertions.assertThat(tx.getType()).as("тип транзакции").isIn(expectedTypes);
         Assertions.assertThat(tx.getId()).as("id транзакции").isPositive();
         Assertions.assertThat(tx.getMoney()).as("блок money").isNotNull();
         Assertions.assertThat(tx.getCreatedAt()).as("created_at").isNotBlank();

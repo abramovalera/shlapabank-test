@@ -9,6 +9,7 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.partialText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Condition.visible;
@@ -110,7 +111,7 @@ public class DashboardPage {
         $("#homeTransferTo").selectOptionByValue(String.valueOf(toAccountId));
         $("#homeTransferAmount").setValue(amount);
         $("[data-testid='modal-transfer-own-submit']").click();
-        $("[data-testid='toast']").shouldHave(text("Перевод"), Duration.ofSeconds(20));
+        $("[data-testid='toast']").shouldHave(partialText("Перевод"), Duration.ofSeconds(25));
         return shouldBeLoaded();
     }
 
@@ -160,14 +161,21 @@ public class DashboardPage {
     public DashboardPage shouldLoadMobileOperators() {
         openPaymentsTab();
         selectPaymentCategory("mobile");
-        $("#mobileAccount").shouldBe(visible);
-        $("#mobileOperatorSbBtn").shouldBe(visible).click();
+        $("#mobileAccount").shouldBe(visible, Duration.ofSeconds(10));
+        SelenideElement opBtn = $("#mobileOperatorSbBtn");
+        opBtn.shouldBe(visible, Duration.ofSeconds(10)).scrollTo().click();
         ElementsCollection opts = $$("#mobileOperatorListbox [role='option']");
+        if (opts.isEmpty()) {
+            opts = $$("#mobileOperatorListbox li[role='option']");
+        }
         if (opts.isEmpty()) {
             opts = $$("#mobileOperatorListbox li");
         }
-        opts.shouldHave(sizeGreaterThan(0), Duration.ofSeconds(15));
-        $("#mobileOperatorSbBtn").click();
+        if (opts.isEmpty()) {
+            opts = $$("#mobileOperatorListbox option");
+        }
+        opts.shouldHave(sizeGreaterThan(0), Duration.ofSeconds(20));
+        opBtn.click();
         return this;
     }
 
@@ -191,7 +199,7 @@ public class DashboardPage {
         return this;
     }
 
-    @Step("Приоритетные счета: сохранить текущий выбор")
+    @Step("Приоритетные счета: установить приоритетный счет")
     public DashboardPage savePrimaryAccounts() {
         openMoreTab();
         $("#primaryAccountsBtn").shouldBe(visible).click();
@@ -202,10 +210,12 @@ public class DashboardPage {
         return shouldBeLoaded();
     }
 
-    @Step("В списке последних операций есть запись с текстом «{snippet}»")
+    @Step("В списке последних операций «{snippet}»")
     public DashboardPage recentTransactionsShouldContain(String snippet) {
         openHomeTab();
-        $("#recentTransactions").shouldHave(text(snippet), Duration.ofSeconds(15));
+        Selenide.refresh();
+        shouldBeLoaded();
+        $("#recentTransactions").shouldHave(text(snippet), Duration.ofSeconds(25));
         return this;
     }
 

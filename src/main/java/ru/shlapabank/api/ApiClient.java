@@ -44,4 +44,23 @@ public class ApiClient {
                 .extract()
                 .response();
     }
+
+    /**
+     * Отправляет авторизованный POST запрос.
+     *
+     * @param path        эндпоинт
+     * @param accessToken bearer токен
+     * @return ответ
+     */
+    public Response get(String path,String accessToken) {
+        return RestAssured.given(ApiRequestSpec.base())
+                .auth()
+                .oauth2(accessToken)
+                .when()
+                .get(path)
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
 }

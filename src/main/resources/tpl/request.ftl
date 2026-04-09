@@ -20,14 +20,7 @@
     </style>
 </head>
 <body>
-<pre><#assign url = data.url!"" /><#assign method = data.method!"GET" />Request to: ${url?html}
-
-Method: ${method?html}
-<#if (data.headers)?has_content>
-
-Headers:
-<#list data.headers as name, value>${name?html}: ${value?html}
-</#list></#if>
+<pre><#assign url = data.url!"" /><#assign method = data.method!"GET" />${method?upper_case?html}: ${url?html}
 <#if data.body??>
 
 With body:
@@ -38,6 +31,10 @@ ${data.body?html}</#if>
 Cookies:
 <#list data.cookies as name, value>${name?html}: ${value?html}
 </#list></#if>
+<#if (data.headers)?has_content>
+
+Headers:
+<#list data.headers as name, value>${name?html}: ${value?html}<#if name?has_next>; </#if></#list></#if>
 </pre>
 </body>
 </html>

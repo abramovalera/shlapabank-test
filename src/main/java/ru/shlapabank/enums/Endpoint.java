@@ -5,7 +5,8 @@ public enum Endpoint {
     REGISTER("/api/v1/auth/register"),
     BASE_URL("http://155.212.170.64"),
     LOGIN("/api/v1/auth/login"),
-    ACCOUNTS("/api/v1/accounts");
+    ACCOUNTS("/api/v1/accounts"),
+    OTP_PREVIEW("/api/v1/helper/otp/preview");
 
     private final String path;
 

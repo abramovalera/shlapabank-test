@@ -23,11 +23,6 @@
 <pre><#assign url = data.url!"" /><#assign code = data.responseCode!"" />Response from: ${url?html}
 
 Status line: <#if code?has_content><#if (code?string)?contains("HTTP")>${code?html}<#else>HTTP/1.1 ${code?html}</#if><#else>—</#if>
-<#if (data.headers)?has_content>
-
-Headers:
-<#list data.headers as name, value>${name?html}: ${value?html}
-</#list></#if>
 <#if data.body??>
 
 With body:
@@ -38,6 +33,10 @@ ${data.body?html}</#if>
 Cookies:
 <#list data.cookies as name, value>${name?html}: ${value?html}
 </#list></#if>
+<#if (data.headers)?has_content>
+
+Headers:
+<#list data.headers as name, value>${name?html}: ${value?html}<#if name?has_next>; </#if></#list></#if>
 </pre>
 </body>
 </html>

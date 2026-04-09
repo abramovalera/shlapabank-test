@@ -51,13 +51,27 @@ dependencies {
     implementation 'com.codeborne:selenide:7.3.3'
 }
 
-test {
-    useJUnitPlatform()
+tasks.withType(Test).configureEach {
     jvmArgs '-Dfile.encoding=UTF-8'
     systemProperty 'file.encoding', 'UTF-8'
+    systemProperties System.properties
     testLogging {
         // Показывает вывод Request/Response фильтров в консоли Gradle/IDE.
         showStandardStreams = true
         events 'passed', 'failed', 'skipped'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('ui', Test) {
+    group = 'verification'
+    description = 'UI tests (JUnit tag: ui)'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'ui'
     }
 }

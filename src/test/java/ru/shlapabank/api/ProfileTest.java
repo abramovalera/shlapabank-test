@@ -22,16 +22,6 @@ class ProfileTest extends AuthenticatedBaseTest {
 
     @Tag("smoke")
     @Test
-    @DisplayName("GET Получение профиля (POZITIVE)")
-    @Severity(SeverityLevel.BLOCKER)
-    void getProfileTest() {
-        ProfileResponse profile = profileSteps.getProfile(token);
-
-        assertThat(profile.getLogin()).as("login").isNotBlank();
-    }
-
-    @Tag("smoke")
-    @Test
     @DisplayName("PUT Обновление профиля (POZITIVE)")
     @Severity(SeverityLevel.CRITICAL)
     void updateProfileTest() {

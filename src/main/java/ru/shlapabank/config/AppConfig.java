@@ -27,4 +27,10 @@ public final class AppConfig {
         if (url == null) throw new RuntimeException("base.url не задан ни в config.properties, ни через -Dbase.url");
         return url;
     }
+
+    public static String getUiUrl() {
+        String url = System.getProperty("ui.url");
+        if (url != null && !url.isBlank()) return url;
+        return getBaseUrl();
+    }
 }

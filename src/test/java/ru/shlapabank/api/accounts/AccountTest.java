@@ -3,9 +3,9 @@ package ru.shlapabank.api.accounts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.shlapabank.api.BaseTest;
 import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.models.response.AccountResponse;
-import ru.shlapabank.api.models.response.TokenResponse;
 import ru.shlapabank.api.steps.AccountSteps;
 import ru.shlapabank.api.steps.AuthSteps;
 import ru.shlapabank.api.steps.HelperSteps;
@@ -18,7 +18,7 @@ import java.util.List;
 import static ru.shlapabank.api.check.Checks.*;
 
 @DisplayName("Счета")
-class AccountTest {
+class AccountTest extends BaseTest {
 
     private final AuthSteps authSteps = new AuthSteps();
     private final AccountSteps accountSteps = new AccountSteps();

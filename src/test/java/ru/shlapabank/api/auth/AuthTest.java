@@ -2,6 +2,7 @@ package ru.shlapabank.api.auth;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.shlapabank.api.BaseTest;
 import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.models.response.RegisterResponse;
 import ru.shlapabank.api.models.response.TokenResponse;
@@ -13,7 +14,7 @@ import static ru.shlapabank.api.check.Checks.*;
 
 
 @DisplayName("Авторизация/Регистрация")
-public class AuthTest {
+public class AuthTest extends BaseTest {
 
     private final AuthSteps authSteps = new AuthSteps();
 

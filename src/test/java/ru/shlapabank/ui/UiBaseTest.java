@@ -7,10 +7,11 @@ import io.qameta.allure.Step;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import ru.shlapabank.api.BaseTest;
 import ru.shlapabank.config.AppConfig;
 import ru.shlapabank.ui.helpers.Attach;
 
-public abstract class UiBaseTest {
+public abstract class UiBaseTest extends BaseTest {
 
     @BeforeEach
     @Step("Открытие браузера")

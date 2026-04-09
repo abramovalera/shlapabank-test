@@ -11,7 +11,6 @@ import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.steps.AuthSteps;
 import ru.shlapabank.ui.pages.AuthPage;
 
-@Tag("ui")
 @Epic("UI")
 @Feature("Авторизация и регистрация")
 @DisplayName("Регистрация и авторизация")
@@ -20,6 +19,7 @@ class AuthTest extends UiBaseTest {
     private final AuthPage authPage = new AuthPage();
     private final AuthSteps authSteps = new AuthSteps();
 
+    @Tag("smoke")
     @Test
     @DisplayName("Регистрация нового пользователя (POZITIVE)")
     @Severity(SeverityLevel.BLOCKER)
@@ -32,6 +32,7 @@ class AuthTest extends UiBaseTest {
                 .shouldBeLoggedIn();
     }
 
+    @Tag("smoke")
     @Test
     @DisplayName("Авторизация существующего пользователя (POZITIVE)")
     @Severity(SeverityLevel.BLOCKER)

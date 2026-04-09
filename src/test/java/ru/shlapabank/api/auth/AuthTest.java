@@ -1,35 +1,47 @@
 package ru.shlapabank.api.auth;
 
-import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.shlapabank.api.generation.UserCredentials;
+import ru.shlapabank.api.generation.TestData;
+import ru.shlapabank.api.models.response.RegisterResponse;
 import ru.shlapabank.api.models.response.TokenResponse;
+import ru.shlapabank.api.steps.AuthSteps;
 import ru.shlapabank.enums.UserRole;
-import ru.shlapabank.api.steps.AuthApiSteps;
-import static org.assertj.core.api.Assertions.assertThat;
+import ru.shlapabank.enums.UserStatus;
 
-@DisplayName("Авторизация")
+import static ru.shlapabank.api.check.Checks.*;
+
+
+@DisplayName("Авторизация/Регистрация")
 public class AuthTest {
 
-    private final AuthApiSteps authApiSteps = new AuthApiSteps();
+    private final AuthSteps authSteps = new AuthSteps();
+
+    @Test
+    @DisplayName("Регистрация пользователя")
+    void registerUserTest() {
+        String login = TestData.generateLogin();
+        String password = TestData.defaultPassword();
+
+        RegisterResponse response = authSteps.register(login, password);
+
+        assertPositive(response.getId(), "id пользователя");
+        assertEquals(response.getLogin(), login, "login");
+        assertEquals(response.getRole(), UserRole.CLIENT, "role");
+        assertEquals(response.getStatus(), UserStatus.ACTIVE, "status");
+    }
 
     @Test
     @DisplayName("Авторизация пользователя")
     void loginUserTest() {
-        UserCredentials user = authApiSteps.generateUserCredentials();
+        String login = TestData.generateLogin();
+        String password = TestData.defaultPassword();
 
-        authApiSteps.register(user);
-        Response rawResponse = authApiSteps.login(user);
-        TokenResponse response = rawResponse.as(TokenResponse.class);
+        authSteps.register(login, password);
+        TokenResponse token = authSteps.login(login, password);
 
-        assertThat(rawResponse.statusCode()).isEqualTo(200);
-
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(response.getAccessToken()).isNotBlank();
-            softly.assertThat(response.getTokenType()).isEqualTo("bearer");
-            softly.assertThat(response.getRole()).isEqualTo(UserRole.CLIENT);
-        });
+        assertNotBlank(token.getAccessToken(), "access_token");
+        assertEquals(token.getTokenType(), "bearer", "token_type");
+        assertEquals(token.getRole(), UserRole.CLIENT, "role");
     }
 }

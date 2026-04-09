@@ -16,6 +16,7 @@ public final class AllureRestAssuredConfigurator {
         AllureRestAssured filter = new AllureRestAssured();
         filter.setRequestTemplate("request.ftl");
         filter.setResponseTemplate("response.ftl");
+        filter.setResponseAttachmentName("Response");
         return filter;
     }
 }

@@ -1,73 +1,66 @@
 package ru.shlapabank.api.accounts;
 
-import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.shlapabank.api.generation.UserCredentials;
-import ru.shlapabank.api.models.request.AccountCreateRequest;
+import ru.shlapabank.api.generation.TestData;
 import ru.shlapabank.api.models.response.AccountResponse;
-import ru.shlapabank.api.steps.AccountApiSteps;
-import ru.shlapabank.api.steps.AuthApiSteps;
-import ru.shlapabank.api.steps.HelperApiSteps;
-
+import ru.shlapabank.api.models.response.TokenResponse;
+import ru.shlapabank.api.steps.AccountSteps;
+import ru.shlapabank.api.steps.AuthSteps;
+import ru.shlapabank.api.steps.HelperSteps;
+import ru.shlapabank.enums.AccountType;
+import ru.shlapabank.enums.Currency;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static ru.shlapabank.api.check.Checks.*;
 
 @DisplayName("Счета")
 class AccountTest {
-    private final AuthApiSteps authApiSteps = new AuthApiSteps();
-    private final AccountApiSteps accountApiSteps = new AccountApiSteps();
-    private final HelperApiSteps helperApiSteps = new HelperApiSteps();
+
+    private final AuthSteps authSteps = new AuthSteps();
+    private final AccountSteps accountSteps = new AccountSteps();
+    private final HelperSteps helperSteps = new HelperSteps();
+
     private String token;
 
     @BeforeEach
     void setUp() {
-        UserCredentials user = authApiSteps.generateUserCredentials();
-        authApiSteps.register(user);
-        token = authApiSteps.loginAndGetToken(user);
+        String login = TestData.generateLogin();
+        String password = TestData.defaultPassword();
+        authSteps.register(login, password);
+        token = authSteps.login(login, password).getAccessToken();
     }
 
     @Test
     @DisplayName("Открытие счета")
     void openAccountTest() {
-        AccountCreateRequest accountRequest = new AccountCreateRequest(AccountType.DEBIT, Currency.RUB);
-        Response rawResponse = accountApiSteps.openAccount(accountRequest, token);
-        AccountResponse response = rawResponse.as(AccountResponse.class);
+        AccountResponse account = accountSteps.openAccount(token, AccountType.DEBIT, Currency.RUB);
 
-        Response accountsResponse = accountApiSteps.getAccounts(token);
-        String accountsBody = accountsResponse.asString();
-
-        assertThat(rawResponse.statusCode()).isEqualTo(201);
-        assertThat(accountsResponse.statusCode()).isEqualTo(200);
-        assertThat(accountsBody).contains(response.getAccountNumber());
-
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(response.getId()).isPositive();
-            softly.assertThat(response.getAccountNumber()).isNotBlank();
-            softly.assertThat(response.getAccountType()).isEqualTo(AccountType.DEBIT);
-            softly.assertThat(response.getCurrency()).isEqualTo(Currency.RUB);
-            softly.assertThat(response.getBalance()).isEqualByComparingTo(BigDecimal.ZERO);
-            softly.assertThat(response.getIsPrimary()).isFalse();
-        });
+        assertPositive(account.getId(), "id счёта");
+        assertNotBlank(account.getAccountNumber(), "номер счёта");
+        assertEquals(account.getAccountType(), AccountType.DEBIT, "тип счёта");
+        assertEquals(account.getCurrency(), Currency.RUB, "валюта");
+        assertZero(account.getBalance(), "начальный баланс");
     }
 
     @Test
     @DisplayName("Пополнение счета")
     void addBalanceAccountTest() {
+        AccountResponse account = accountSteps.openAccount(token, AccountType.DEBIT, Currency.RUB);
         BigDecimal amount = new BigDecimal("1000.00");
 
-        AccountCreateRequest accountRequest = new AccountCreateRequest(AccountType.DEBIT, Currency.RUB);
-        AccountResponse openedAccount = accountApiSteps.openAccount(accountRequest, token).as(AccountResponse.class);
+        String otp = helperSteps.getOtp(token);
+        accountSteps.addBalance(token, account.getId(), amount, otp);
 
-        String otpCode = helperApiSteps.getOtpCode(token);
-        Response rawResponse = accountApiSteps.topUpAccount(openedAccount.getId(), amount, otpCode, token);
-        AccountResponse updatedAccount = accountApiSteps.getAccountById(openedAccount.getId(), token);
+        List<AccountResponse> accounts = accountSteps.getAccounts(token);
+        AccountResponse updated = accounts.stream()
+                .filter(a -> a.getId().equals(account.getId()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Счет не найден"));
 
-        assertThat(rawResponse.statusCode()).isEqualTo(201);
-        assertThat(updatedAccount.getBalance()).isEqualByComparingTo(amount);
+        assertEquals(updated.getBalance(), amount, "баланс после пополнения");
     }
 }

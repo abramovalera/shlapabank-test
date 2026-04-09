@@ -15,6 +15,7 @@ import ru.shlapabank.enums.UserRole;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TokenResponse {
+
     @JsonProperty("access_token")
     private String accessToken;
 

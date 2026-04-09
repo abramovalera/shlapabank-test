@@ -55,4 +55,9 @@ test {
     useJUnitPlatform()
     jvmArgs '-Dfile.encoding=UTF-8'
     systemProperty 'file.encoding', 'UTF-8'
+    testLogging {
+        // Показывает вывод Request/Response фильтров в консоли Gradle/IDE.
+        showStandardStreams = true
+        events 'passed', 'failed', 'skipped'
+    }
 }

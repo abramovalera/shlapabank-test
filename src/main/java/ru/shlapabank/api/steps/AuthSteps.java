@@ -32,4 +32,13 @@ public class AuthSteps {
                 .extract()
                 .as(TokenResponse.class);
     }
+
+    @Step("Удаление пользователя {userId}")
+    public void deleteUser(String adminToken, Integer userId) {
+        ApiRequestSpec.auth(adminToken)
+                .pathParam("user_id", userId)
+                .delete(Endpoint.ADMIN_USER_DELETE.path())
+                .then()
+                .statusCode(200);
+    }
 }

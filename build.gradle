@@ -36,7 +36,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.32'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 
-    // Allure — отчёты
+    // Allure — отчеты
     implementation 'io.qameta.allure:allure-junit5:2.26.0'
     implementation 'io.qameta.allure:allure-rest-assured:2.26.0'
     implementation 'io.qameta.allure:allure-selenide:2.26.0'
